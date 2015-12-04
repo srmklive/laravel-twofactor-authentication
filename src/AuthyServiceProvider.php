@@ -27,7 +27,7 @@ class AuthyServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__. '/../migrations/migration.php' => database_path('/migrations/' .
-                Carbon::now()->parse('Y_m_d_His') . '_update_users_table.php'),
+                str_replace(':', '', str_replace('-', '_', Carbon::now()->format("Y-m-d_H:i:s"))) . '_update_users_table.php'),
         ]);
     }
     /**
