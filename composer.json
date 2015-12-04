@@ -1,0 +1,23 @@
+{
+  "name": "srmklive/authy",
+  "description": "Plugin for enabling two-factor authentication in Laravel applications",
+  "keywords": ["api", "authentication", "two-factor", "authy", "laravel two-factor authentication"],
+  "homepage": "https://github.com/srmklive/authy",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "nesbot/carbon": "~1.2"
+  },
+  "autoload":{
+    "psr-4": {
+      "Srmklive\\Authy\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Raza Mehdi",
+      "email": "srmk@outlook.com"
+    }
+  ]
+}
