@@ -29,6 +29,12 @@ class AuthyServiceProvider extends ServiceProvider
             __DIR__. '/../migrations/migration.php' => database_path('/migrations/' .
                 str_replace(':', '', str_replace('-', '_', Carbon::now()->format("Y-m-d_H:i:s"))) . '_update_users_table.php'),
         ]);
+
+        // Load Authy View Files
+        $this->loadViewsFrom(__DIR__.'/../views', 'authy');
+        $this->publishes([
+            __DIR__.'/../views' => base_path('resources/views/vendor/authy'),
+        ]);
     }
     /**
      * Register the service provider.
