@@ -25,10 +25,12 @@ class AuthyServiceProvider extends ServiceProvider
             __DIR__. '/../config/config.php' => config_path('authy.php'),
         ]);
 
-        $this->publishes([
-            __DIR__. '/../migrations/migration.php' => database_path('/migrations/' .
-                str_replace(':', '', str_replace('-', '_', Carbon::now()->format("Y-m-d_H:i:s"))) . '_update_users_table.php'),
-        ]);
+        if ( ! class_exists('UpdateUsersTable') ) {
+            $this->publishes([
+                __DIR__. '/../migrations/migration.php' => database_path('/migrations/' .
+                    str_replace(':', '', str_replace('-', '_', Carbon::now()->format("Y-m-d_H:i:s"))) . '_update_users_table.php'),
+            ]);
+        }
 
         // Load Authy View Files
         $this->loadViewsFrom(__DIR__.'/../views', 'authy');
