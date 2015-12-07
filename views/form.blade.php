@@ -5,6 +5,7 @@
 
 <div class="login-form">
     <form method="POST">
+        {{csrf_field()}}
         <h3>Enable Two-Factor Authentication</h3>
         Country:
         <select id="authy-countries" name="country-code"></select>
