@@ -6,12 +6,12 @@
  */
 
 return [
-    'mode' => 'live', // Can be either 'live' or 'sandbox'. If empty or invalid 'live' will be used
+    'mode' => env('AUTHY_MODE', 'live'), // Can be either 'live' or 'sandbox'. If empty or invalid 'live' will be used
     'sandbox' => [
-        'key' => ''
+        'key' => env('AUTHY_TEST_KEY', '')
     ],
     'live' => [
-        'key' => ''
+        'key' => env('AUTHY_LIVE_KEY', '')
     ],
-    'sms' => false,
+    'sms' => env('AUTHY_SEND_SMS', false),
 ];
