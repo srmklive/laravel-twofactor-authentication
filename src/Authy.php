@@ -37,6 +37,22 @@ class Authy implements Provider
     }
 
     /**
+     * Determine if the given user has two-factor authentication enabled.
+     *
+     * @param  \Laravel\Spark\Contracts\Auth\TwoFactor\Authenticatable  $user
+     * @return bool
+     */
+    public function canSendSms(TwoFactorAuthenticatable $user)
+    {
+        if ($this->isEnabled($user)) {
+            if ($user->getTwoFactorAuthProviderOptions()['sms'])
+                return true;
+        }
+
+        return false;
+    }
+    
+    /**
      * Register the given user with the provider.
      *
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable  $user
