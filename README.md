@@ -14,7 +14,7 @@ This plugins code is a direct port of the two-factor authentication functionalit
 
 This plugins allows you to enable two-factor authentication in your Laravel applications. 
 
-** Only Laravel 5 or greater supported **
+**Only Laravel 5 or greater supported**
 
 
 <a name="installation"></a>
