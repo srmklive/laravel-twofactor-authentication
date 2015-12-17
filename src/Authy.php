@@ -40,9 +40,10 @@ class Authy implements Provider
      * Register the given user with the provider.
      *
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable  $user
+     * @param boolean $sms
      * @return void
      */
-    public function register(TwoFactorAuthenticatable $user)
+    public function register(TwoFactorAuthenticatable $user, $sms)
     {
         $response = json_decode((new HttpClient)->post($this->config['api_url'] . '/protected/json/users/new?api_key=' . $this->config['api_key'], [
             'form_params' => [
@@ -56,16 +57,17 @@ class Authy implements Provider
 
         $user->setTwoFactorAuthProviderOptions([
             'id' => $response['user']['id'],
+            'sms' => $sms,
         ]);
     }
 
     /**
-     * Send the given user authentication token
+     * Send the user 2-factor authentication token via SMS
      *
-     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable  $user
-     * @return bool
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable  $user
+     * @return void
      */
-    public function sendSms(TwoFactorAuthenticatable $user)
+    public function sendTokenSms(TwoFactorAuthenticatable $user)
     {
         try {
             $options = $user->getTwoFactorAuthProviderOptions();
@@ -76,6 +78,7 @@ class Authy implements Provider
             )->getBody(), true);
 
             return $response['success'] === true;
+
         } catch (Exception $e) {
             return false;
         }
