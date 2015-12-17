@@ -72,7 +72,7 @@ class Authy implements Provider
 
             $response = json_decode((new HttpClient)->get(
                 $this->config['api_url'] . '/protected/json/sms/' . $options['id'] .
-                '?force=true&api_key' . $this->config['api_key']
+                '?force=true&api_key=' . $this->config['api_key']
             )->getBody(), true);
 
             return $response['success'] === true;
