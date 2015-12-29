@@ -1,8 +1,8 @@
 {
-  "name": "srmklive/authy",
+  "name": "srmklive/laravel-twofactor-authentication",
   "description": "Plugin for enabling two-factor authentication in Laravel applications",
   "keywords": ["api", "authentication", "two-factor", "authy", "laravel two-factor authentication"],
-  "homepage": "https://github.com/srmklive/authy",
+  "homepage": "https://github.com/srmklive/laravel-twofactor-authentication",
   "license": "MIT",
   "require": {
     "php": ">=5.5.0",
