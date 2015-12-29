@@ -1,4 +1,4 @@
-# Laravel Authy
+# Laravel Two-Factor Authentication
 - [Credits](#credits)
 - [Introduction](#introduction)
 - [Installation](#installation)
