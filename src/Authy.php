@@ -83,7 +83,7 @@ class Authy implements Provider
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return void
      */
-    public function sendTokenSms(TwoFactorAuthenticatable $user)
+    public function sendSmsToken(TwoFactorAuthenticatable $user)
     {
         try {
             $options = $user->getTwoFactorAuthProviderOptions();

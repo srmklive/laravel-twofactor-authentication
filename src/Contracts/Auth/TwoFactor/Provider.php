@@ -37,7 +37,7 @@ interface Provider
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return void
      */
-    public function sendTokenSms(TwoFactorAuthenticatable $user);
+    public function sendSmsToken(TwoFactorAuthenticatable $user);
 
     /**
      * Determine if the given token is valid for the given user.

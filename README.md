@@ -134,7 +134,7 @@ try {
 $user = User::find(1);
 
 try {
-   Authy::twoFactorProvider()->sendSms($user);
+   Authy::twoFactorProvider()->sendSmsToken($user);
 } catch (Exception $e) {
    app(ExceptionHandler::class)->report($e);
 
