@@ -128,7 +128,7 @@ try {
 }
 ```
 
-* Sending SMS
+* Send token via SMS
 
 ```
 $user = User::find(1);
@@ -142,7 +142,21 @@ try {
 }
 ```
 
-* Validating 2FA Token
+* Send token via phone call
+
+```
+$user = User::find(1);
+
+try {
+   Authy::twoFactorProvider()->sendPhoneCallToken($user);
+} catch (Exception $e) {
+   app(ExceptionHandler::class)->report($e);
+
+   return response()->json(['error' => ['Unable To Send 2FA Login Token']], 422);
+}
+```
+
+* Validating two-factor token
 
 ```
 $user = User::find(1);

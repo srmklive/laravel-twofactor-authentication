@@ -9,6 +9,11 @@ use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenti
 
 class Authy implements Provider
 {
+    /**
+     * Array containing configuration data.
+     *
+     * @var array $config
+     */
     private $config;
 
     /**
@@ -37,15 +42,16 @@ class Authy implements Provider
     }
 
     /**
-     * Determine if the given user has two-factor authentication enabled.
+     * Determine if the given user should be sent two-factor authentication token via SMS/phone call.
      *
-     * @param  \Laravel\Spark\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return bool
      */
-    public function canSendSms(TwoFactorAuthenticatable $user)
+    public function canSendToken(TwoFactorAuthenticatable $user)
     {
         if ($this->isEnabled($user)) {
-            if ($user->getTwoFactorAuthProviderOptions()['sms'])
+            if ($user->getTwoFactorAuthProviderOptions()['sms'] ||
+                $user->getTwoFactorAuthProviderOptions()['phone'])
                 return true;
         }
 
@@ -78,7 +84,7 @@ class Authy implements Provider
     }
 
     /**
-     * Send the user 2-factor authentication token via SMS
+     * Send the user two-factor authentication token via SMS
      *
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return void
@@ -90,6 +96,29 @@ class Authy implements Provider
 
             $response = json_decode((new HttpClient)->get(
                 $this->config['api_url'] . '/protected/json/sms/' . $options['id'] .
+                '?force=true&api_key=' . $this->config['api_key']
+            )->getBody(), true);
+
+            return $response['success'] === true;
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Start the user two-factor authentication via phone call
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @return void
+     */
+    public function sendPhoneCallToken(TwoFactorAuthenticatable $user)
+    {
+        try {
+            $options = $user->getTwoFactorAuthProviderOptions();
+
+            $response = json_decode((new HttpClient)->get(
+                $this->config['api_url'] . '/protected/json/call/' . $options['id'] .
                 '?force=true&api_key=' . $this->config['api_key']
             )->getBody(), true);
 

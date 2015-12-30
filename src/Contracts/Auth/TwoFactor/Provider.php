@@ -15,12 +15,12 @@ interface Provider
     public function isEnabled(TwoFactorAuthenticatable $user);
 
     /**
-     * Determine if the given user should be sent two-factor authentication token via SMS.
+     * Determine if the given user should be sent two-factor authentication token via SMS/phone call.
      *
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return bool
      */
-    public function canSendSms(TwoFactorAuthenticatable $user);
+    public function canSendToken(TwoFactorAuthenticatable $user);
 
     /**
      * Register the given user with the provider.
@@ -32,12 +32,20 @@ interface Provider
     public function register(TwoFactorAuthenticatable $user, $sms);
 
     /**
-     * Send the user 2-factor authentication token via SMS
+     * Send the user two-factor authentication token via SMS
      *
      * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @return void
      */
     public function sendSmsToken(TwoFactorAuthenticatable $user);
+
+    /**
+     * Start the user two-factor authentication via phone call
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @return void
+     */
+    public function sendPhoneCallToken(TwoFactorAuthenticatable $user);
 
     /**
      * Determine if the given token is valid for the given user.
