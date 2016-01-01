@@ -1,7 +1,7 @@
 @section('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/authy-forms.css/2.2/flags.authy.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/authy-forms.css/2.2/form.authy.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/flags.authy.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.css" />
 @endsection
 
 @section('content')
@@ -42,5 +42,5 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/authy-forms.js/2.2/form.authy.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.js"></script>
 @endsection
