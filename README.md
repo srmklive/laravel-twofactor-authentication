@@ -32,7 +32,7 @@ composer require srmklive/authy
 'Srmklive\Authy\AuthyServiceProvider' // Laravel 5
 ```
 ```
-Srmklive\Authy\AuthyServiceProvider::class // Laravel 5.1
+Srmklive\Authy\AuthyServiceProvider::class // Laravel 5.1 or greater
 ```
 
 * Add the alias to your $aliases array in config/app.php file like: 
@@ -41,7 +41,7 @@ Srmklive\Authy\AuthyServiceProvider::class // Laravel 5.1
 'Authy' => 'Srmklive\Authy\Facades\Authy' // Laravel 5
 ```
 ```
-'Authy' => Srmklive\Authy\Facades\Authy::class // Laravel 5.1
+'Authy' => Srmklive\Authy\Facades\Authy::class // Laravel 5.1 or greater
 ```
 
 * Run the following command to publish configuration:
