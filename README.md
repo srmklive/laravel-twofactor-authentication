@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Demo Application](#demo-application)
 
 <a name="credits"></a>
 ## Credits
@@ -185,3 +186,16 @@ try {
    return response()->json(['error' => ['Unable to Delete User']], 422);
 }
 ```
+
+<a name="demo-application"></a>
+## Demo Application
+
+I have also implemented this package in a simple laravel application. You can view installation instructions [here](https://github.com/srmklive/laravel-twofactor-authentication-app). Through this application, you can do:
+
+* User login & registration.
+* Enable/Disable two-factor authentication for a user.
+ 
+Following are the download links for the laravel demo application with two-factor authentication:
+
+* [Laravel 5.1](https://github.com/srmklive/laravel-twofactor-authentication-app/archive/v1.0.zip) 
+* [Laravel 5.2](https://github.com/srmklive/laravel-twofactor-authentication-app/archive/v2.0.zip)
