@@ -1,14 +1,8 @@
 # Laravel Two-Factor Authentication
-- [Credits](#credits)
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Demo Application](#demo-application)
-
-<a name="credits"></a>
-## Credits
-
-This plugins code is a direct port of the two-factor authentication functionality implemented in [Laravel Spark](https://github.com/laravel/spark) by [Taylor Otwell](https://github.com/taylorotwell). However some modifications are done to the original code in this plugin.  
 
 <a name="introduction"></a>
 ## Introduction
