@@ -29,7 +29,7 @@ interface Provider
      * @param boolean $sms
      * @return void
      */
-    public function register(TwoFactorAuthenticatable $user, $sms);
+    public function register(TwoFactorAuthenticatable $user, $sms = false);
 
     /**
      * Send the user two-factor authentication token via SMS

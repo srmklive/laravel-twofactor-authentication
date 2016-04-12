@@ -65,7 +65,7 @@ class Authy implements Provider
      * @param boolean $sms
      * @return void
      */
-    public function register(TwoFactorAuthenticatable $user, $sms)
+    public function register(TwoFactorAuthenticatable $user, $sms = false)
     {
         $response = json_decode((new HttpClient)->post($this->config['api_url'] . '/protected/json/users/new?api_key=' . $this->config['api_key'], [
             'form_params' => [
