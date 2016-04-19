@@ -2,6 +2,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Add a new TwoFactor Authentication Provider](#implement-new-provider)
 - [Demo Application](#demo-application)
 
 <a name="introduction"></a>
@@ -178,6 +179,86 @@ try {
    app(ExceptionHandler::class)->report($e);
 
    return response()->json(['error' => ['Unable to Delete User']], 422);
+}
+```
+
+<a name="implement-new-provider"></a>
+## Add a new TwoFactor Authentication Provider
+
+Currently this package uses two-factor authentication services from [**Authy**](https://www.authy.com). You can also implement another two-factor authentication provider by doing the following:
+
+```
+<?php
+
+namespace App\Services;
+
+use Exception;
+use GuzzleHttp\Client as HttpClient;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\Provider as BaseProvider;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
+
+class MyAuthProvider implements BaseProvider
+{
+    /**
+     * Array containing configuration data.
+     *
+     * @var array $config
+     */
+    private $config;
+
+    /**
+     * Authy constructor.
+     */
+    public function __construct()
+    {
+    	// Add your configuration code here
+    }
+
+    /**
+     * Determine if the given user has two-factor authentication enabled.
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @return bool
+     */
+    public function isEnabled(TwoFactorAuthenticatable $user)
+    {
+    	// Add your code here
+    }
+
+    /**
+     * Register the given user with the provider.
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param boolean $sms
+     * @return void
+     */
+    public function register(TwoFactorAuthenticatable $user, $sms = false)
+    {
+    	// Add your code here
+    }
+
+    /**
+     * Determine if the given token is valid for the given user.
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param  string  $token
+     * @return bool
+     */
+    public function tokenIsValid(TwoFactorAuthenticatable $user, $token)
+    {
+    	// Add your code here
+    }
+
+    /**
+     * Delete the given user from the provider.
+     *
+     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @return bool
+     */
+    public function delete(TwoFactorAuthenticatable $user)
+    {
+    	// Add your code here
+    }
 }
 ```
 
