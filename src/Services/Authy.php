@@ -1,14 +1,19 @@
 <?php
 
-namespace Srmklive\Authy;
+namespace Srmklive\Authy\Services;
 
 use Exception;
 use GuzzleHttp\Client as HttpClient;
-use Srmklive\Authy\Contracts\Auth\TwoFactor\Provider;
+use Srmklive\Authy\Auth\TwoFactor\CanSendToken;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\Provider as BaseProvider;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\SMSToken as SendSMSTokenContract;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\PhoneToken as SendPhoneTokenContract;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
 
-class Authy implements Provider
+class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContract
 {
+    use CanSendToken;
+
     /**
      * Array containing configuration data.
      *
@@ -41,23 +46,6 @@ class Authy implements Provider
         return isset($user->getTwoFactorAuthProviderOptions()['id']);
     }
 
-    /**
-     * Determine if the given user should be sent two-factor authentication token via SMS/phone call.
-     *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
-     * @return bool
-     */
-    public function canSendToken(TwoFactorAuthenticatable $user)
-    {
-        if ($this->isEnabled($user)) {
-            if ($user->getTwoFactorAuthProviderOptions()['sms'] ||
-                $user->getTwoFactorAuthProviderOptions()['phone'])
-                return true;
-        }
-
-        return false;
-    }
-    
     /**
      * Register the given user with the provider.
      *

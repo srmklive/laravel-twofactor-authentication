@@ -38,6 +38,7 @@ class AuthyServiceProvider extends ServiceProvider
             __DIR__.'/../views' => base_path('resources/views/vendor/authy'),
         ]);
     }
+
     /**
      * Register the service provider.
      *
@@ -45,20 +46,9 @@ class AuthyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerAuthy();
         $this->mergeConfig();
     }
-    /**
-     * Register the application bindings.
-     *
-     * @return void
-     */
-    private function registerAuthy()
-    {
-        $this->app->singleton('authy', function () {
-            return new Authy();
-        });
-    }
+    
     /**
      * Merges user's and paypal's configs.
      *
