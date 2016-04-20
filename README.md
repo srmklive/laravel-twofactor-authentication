@@ -114,7 +114,7 @@ $user->setAuthPhoneInformation(
 );
 
 try {
-   Authy::twoFactorProvider()->register($user);
+   Authy::getProvider()->register($user);
 
    $user->save();
 } catch (Exception $e) {
@@ -130,7 +130,7 @@ try {
 $user = User::find(1);
 
 try {
-   Authy::twoFactorProvider()->sendSmsToken($user);
+   Authy::getProvider()->sendSmsToken($user);
 } catch (Exception $e) {
    app(ExceptionHandler::class)->report($e);
 
@@ -144,7 +144,7 @@ try {
 $user = User::find(1);
 
 try {
-   Authy::twoFactorProvider()->sendPhoneCallToken($user);
+   Authy::getProvider()->sendPhoneCallToken($user);
 } catch (Exception $e) {
    app(ExceptionHandler::class)->report($e);
 
@@ -158,7 +158,7 @@ try {
 $user = User::find(1);
 
 try {
-   Authy::twoFactorProvider()->tokenIsValid($user, $token);
+   Authy::getProvider()->tokenIsValid($user, $token);
 } catch (Exception $e) {
    app(ExceptionHandler::class)->report($e);
 
@@ -172,7 +172,7 @@ try {
 $user = User::find(1);
 
 try {
-   Authy::twoFactorProvider()->delete($user);
+   Authy::getProvider()->delete($user);
 
    $user->save();
 } catch (Exception $e) {
