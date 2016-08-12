@@ -4,6 +4,7 @@ namespace Srmklive\Authy;
 
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
+use Srmklive\Authy\Services\Authy;
 
 class AuthyServiceProvider extends ServiceProvider
 {
@@ -46,11 +47,25 @@ class AuthyServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerAuthy();
+
         $this->mergeConfig();
     }
-    
+
     /**
-     * Merges user's and paypal's configs.
+     * Register the Authy class with application.
+     *
+     * @return void
+     */
+    private function registerAuthy()
+    {
+        $this->app->singleton('authy', function() {
+            return new Authy;
+        });
+    }
+
+    /**
+     * Merges user's and paypal's config files.
      *
      * @return void
      */

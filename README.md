@@ -1,6 +1,7 @@
 # Laravel Two-Factor Authentication
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Modify Login Workflow](#modify-login-workflow)
 - [Usage](#usage)
 - [Add a new TwoFactor Authentication Provider](#implement-new-provider)
 - [Demo Application](#demo-application)
@@ -25,10 +26,10 @@ composer require srmklive/authy
 * Add the service provider to your $providers array in config/app.php file like: 
 
 ```
-'Srmklive\Authy\AuthyServiceProvider' // Laravel 5
+'Srmklive\Authy\Providers\AuthyServiceProvider' // Laravel 5
 ```
 ```
-Srmklive\Authy\AuthyServiceProvider::class // Laravel 5.1 or greater
+Srmklive\Authy\Providers\AuthyServiceProvider::class // Laravel 5.1 or greater
 ```
 
 * Add the alias to your $aliases array in config/app.php file like: 
@@ -97,6 +98,143 @@ protected $hidden = [
 	'two_factor_options'
 ];
 ```
+
+
+<a name="modify-login-workflow"></a>
+## Modifying Login Workflow
+
+* You need to add the following code to your `app\Http\Controllers\Auth\AuthController.php`.
+
+```
+    /**
+     * Send the post-authentication response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, Authenticatable $user)
+    {
+        if (authy()->isEnabled($user)) {
+            return $this->logoutAndRedirectToTokenScreen($request, $user);
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
+    
+    /**
+     * Generate a redirect response to the two-factor token screen.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @return \Illuminate\Http\Response
+     */
+    protected function logoutAndRedirectToTokenScreen(Request $request, Authenticatable $user)
+    {
+        // Uncomment this line for Laravel 5.2+
+        //auth()->guard($this->getGuard())->logout();
+
+        // Uncomment this line for Laravel 5.0 & 5.1
+        // auth()->logout();
+
+        $request->session()->put('authy:auth:id', $user->id);
+
+        return redirect(url('auth/token'));
+    }
+
+    /**
+     * Show two-factor authentication page
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\View\View
+     */
+    public function getToken()
+    {
+        return session('authy:auth:id') ? view('auth.token') : redirect(url('login'));
+    }
+
+    /**
+     * Verify the two-factor authentication token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postToken(Request $request)
+    {
+        $this->validate($request, ['token' => 'required']);
+        if (! session('authy:auth:id')) {
+            return redirect(url('login'));
+        }
+
+        // Uncomment these lines for use in Laravel 5.2+ 
+        //$guard = config('auth.defaults.guard');
+        //$provider = config('auth.guards.' . $guard . '.provider');
+        //$model = config('auth.providers.' . $provider . '.model');
+
+        Uncomment these lines for use in Laravel 5.0 & 5.1
+        // $model = config('auth.model');
+
+        $user = (new $model)->findOrFail(
+            $request->session()->pull('authy:auth:id')
+        );
+
+        if (authy()->tokenIsValid($user, $request->token)) {
+            auth()->login($user);
+
+            return redirect()->intended($this->redirectPath());
+        } else {
+            return redirect(url('login'))->withErrors('Invalid two-factor authentication token provided!');
+        }
+    }        
+```
+
+* Add route to verify two-factor authentication token
+
+```
+Route::get('auth/token','Auth\AuthController@getToken');
+Route::post('auth/token','Auth\AuthController@postToken');
+```
+
+* Create view file in `resources/views/auth/token.blade.php`. Change this accordingly for your application. I have used code from [AdminLTE](https://github.com/almasaeed2010/AdminLTE) theme here.
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="register-logo">
+        Two-factor Authentication
+    </div>
+
+    <div class="register-box-body">
+        <p class="login-box-msg">Validate your two-factor authentication token</p>
+        <form method="POST" action="{{url('auth/token')}}">
+            {!! csrf_field() !!}
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="form-group has-feedback">
+                <input type="type" name="token" class="form-control" placeholder="Token">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-7"></div><!-- /.col -->
+                <div class="col-xs-5">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Verify Token</button>
+                </div><!-- /.col -->
+            </div>
+        </form>
+    </div><!-- /.form-box -->
+@endsection
+
+```
+
 
 <a name="usage"></a>
 ## Usage
