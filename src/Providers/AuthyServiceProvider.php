@@ -1,6 +1,6 @@
 <?php
 
-namespace Srmklive\Authy;
+namespace Srmklive\Authy\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
