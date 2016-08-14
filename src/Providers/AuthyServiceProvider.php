@@ -23,7 +23,7 @@ class AuthyServiceProvider extends ServiceProvider
     {
         // Publish config files
         $this->publishes([
-            __DIR__. '/../config/config.php' => config_path('authy.php'),
+            __DIR__. '/../../config/config.php' => config_path('authy.php'),
         ]);
 
         if ( ! class_exists('UpdateUsersTable') ) {
@@ -72,7 +72,7 @@ class AuthyServiceProvider extends ServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__. '/../config/config.php', 'authy'
+            __DIR__. '/../../config/config.php', 'authy'
         );
     }
 }
