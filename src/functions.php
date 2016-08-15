@@ -7,7 +7,7 @@ if (! function_exists('authy')) {
      *
      * @return mixed
      */
-    function express_checkout()
+    function authy()
     {
         return app('authy');
     }
