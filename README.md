@@ -132,7 +132,7 @@ protected $hidden = [
     protected function logoutAndRedirectToTokenScreen(Request $request, Authenticatable $user)
     {
         // Uncomment this line for Laravel 5.2+
-        //auth()->guard($this->getGuard())->logout();
+        //auth($this->getGuard())->logout();
 
         // Uncomment this line for Laravel 5.0 & 5.1
         // auth()->logout();
@@ -178,7 +178,11 @@ protected $hidden = [
         );
 
         if (authy()->tokenIsValid($user, $request->token)) {
-            auth()->login($user);
+            // Uncomment this line for Laravel 5.2+
+            //auth($this->getGuard())->login($user);
+
+            // Uncomment this line for Laravel 5.0 & 5.1
+	    //auth()->login($user);
 
             return redirect()->intended($this->redirectPath());
         } else {
