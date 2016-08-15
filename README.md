@@ -170,7 +170,7 @@ protected $hidden = [
         //$provider = config('auth.guards.' . $guard . '.provider');
         //$model = config('auth.providers.' . $provider . '.model');
 
-        Uncomment these lines for use in Laravel 5.0 & 5.1
+        // Uncomment the line below for use in Laravel 5.0 & 5.1
         // $model = config('auth.model');
 
         $user = (new $model)->findOrFail(
