@@ -5,10 +5,10 @@ namespace Srmklive\Authy\Services;
 use Exception;
 use GuzzleHttp\Client as HttpClient;
 use Srmklive\Authy\Auth\TwoFactor\CanSendToken;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
+use Srmklive\Authy\Contracts\Auth\TwoFactor\PhoneToken as SendPhoneTokenContract;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\Provider as BaseProvider;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\SMSToken as SendSMSTokenContract;
-use Srmklive\Authy\Contracts\Auth\TwoFactor\PhoneToken as SendPhoneTokenContract;
-use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
 
 class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContract
 {
@@ -17,7 +17,7 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
     /**
      * Array containing configuration data.
      *
-     * @var array $config
+     * @var array
      */
     private $config;
 
@@ -38,7 +38,8 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
     /**
      * Determine if the given user has two-factor authentication enabled.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return bool
      */
     public function isEnabled(TwoFactorAuthenticatable $user)
@@ -49,32 +50,34 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
     /**
      * Register the given user with the provider.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
-     * @param boolean $sms
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param bool                                                     $sms
+     *
      * @return void
      */
     public function register(TwoFactorAuthenticatable $user, $sms = false)
     {
-        $response = json_decode((new HttpClient)->post($this->config['api_url'] . '/protected/json/users/new?api_key=' . $this->config['api_key'], [
+        $response = json_decode((new HttpClient())->post($this->config['api_url'].'/protected/json/users/new?api_key='.$this->config['api_key'], [
             'form_params' => [
                 'user' => [
-                    'email' => $user->getEmailForTwoFactorAuth(),
-                    'cellphone' => preg_replace('/[^0-9]/', '', $user->getAuthPhoneNumber()),
+                    'email'        => $user->getEmailForTwoFactorAuth(),
+                    'cellphone'    => preg_replace('/[^0-9]/', '', $user->getAuthPhoneNumber()),
                     'country_code' => $user->getAuthCountryCode(),
                 ],
             ],
         ])->getBody(), true);
 
         $user->setTwoFactorAuthProviderOptions([
-            'id' => $response['user']['id'],
+            'id'  => $response['user']['id'],
             'sms' => $sms,
         ]);
     }
 
     /**
-     * Send the user two-factor authentication token via SMS
+     * Send the user two-factor authentication token via SMS.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return void
      */
     public function sendSmsToken(TwoFactorAuthenticatable $user)
@@ -82,22 +85,22 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
         try {
             $options = $user->getTwoFactorAuthProviderOptions();
 
-            $response = json_decode((new HttpClient)->get(
-                $this->config['api_url'] . '/protected/json/sms/' . $options['id'] .
-                '?force=true&api_key=' . $this->config['api_key']
+            $response = json_decode((new HttpClient())->get(
+                $this->config['api_url'].'/protected/json/sms/'.$options['id'].
+                '?force=true&api_key='.$this->config['api_key']
             )->getBody(), true);
 
             return $response['success'] === true;
-
         } catch (Exception $e) {
             return false;
         }
     }
 
     /**
-     * Start the user two-factor authentication via phone call
+     * Start the user two-factor authentication via phone call.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return void
      */
     public function sendPhoneCallToken(TwoFactorAuthenticatable $user)
@@ -105,13 +108,12 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
         try {
             $options = $user->getTwoFactorAuthProviderOptions();
 
-            $response = json_decode((new HttpClient)->get(
-                $this->config['api_url'] . '/protected/json/call/' . $options['id'] .
-                '?force=true&api_key=' . $this->config['api_key']
+            $response = json_decode((new HttpClient())->get(
+                $this->config['api_url'].'/protected/json/call/'.$options['id'].
+                '?force=true&api_key='.$this->config['api_key']
             )->getBody(), true);
 
             return $response['success'] === true;
-
         } catch (Exception $e) {
             return false;
         }
@@ -120,8 +122,9 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
     /**
      * Determine if the given token is valid for the given user.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
-     * @param  string  $token
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param string                                                   $token
+     *
      * @return bool
      */
     public function tokenIsValid(TwoFactorAuthenticatable $user, $token)
@@ -129,9 +132,9 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
         try {
             $options = $user->getTwoFactorAuthProviderOptions();
 
-            $response = json_decode((new HttpClient)->get(
-                $this->config['api_url'] . '/protected/json/verify/' .
-                $token. '/' . $options['id'] . '?force=true&api_key='.
+            $response = json_decode((new HttpClient())->get(
+                $this->config['api_url'].'/protected/json/verify/'.
+                $token.'/'.$options['id'].'?force=true&api_key='.
                 $this->config['api_key']
             )->getBody(), true);
 
@@ -144,16 +147,17 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
     /**
      * Delete the given user from the provider.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return bool
      */
     public function delete(TwoFactorAuthenticatable $user)
     {
         $options = $user->getTwoFactorAuthProviderOptions();
 
-        (new HttpClient)->post(
-            $this->config['api_url'] . '/protected/json/users/delete/' .
-            $options['id'] . '?api_key=' . $this->config['api_key']
+        (new HttpClient())->post(
+            $this->config['api_url'].'/protected/json/users/delete/'.
+            $options['id'].'?api_key='.$this->config['api_key']
         );
 
         $user->setTwoFactorAuthProviderOptions([]);

@@ -7,9 +7,10 @@ use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenti
 interface SMSToken
 {
     /**
-     * Send the user two-factor authentication token via SMS
+     * Send the user two-factor authentication token via SMS.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return void
      */
     public function sendSmsToken(TwoFactorAuthenticatable $user);

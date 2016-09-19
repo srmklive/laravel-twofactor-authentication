@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class UpdateUsersTable extends Migration
 {
@@ -31,7 +31,7 @@ class UpdateUsersTable extends Migration
             $table->dropColumn([
                 'phone_country_code',
                 'phone_number',
-                'two_factor_options'
+                'two_factor_options',
             ]);
         });
     }
