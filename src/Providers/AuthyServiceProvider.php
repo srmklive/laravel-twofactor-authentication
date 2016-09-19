@@ -73,7 +73,8 @@ class AuthyServiceProvider extends ServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/config.php', 'authy'
+            __DIR__.'/../../config/config.php',
+            'authy'
         );
     }
 }

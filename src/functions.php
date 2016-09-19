@@ -1,7 +1,6 @@
 <?php
 
 if (!function_exists('authy')) {
-
     /**
      * Global helper function for Authy class.
      *
