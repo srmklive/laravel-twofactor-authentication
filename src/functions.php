@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('authy')) {
+if (!function_exists('authy')) {
 
     /**
      * Global helper function for Authy class.
@@ -11,5 +11,4 @@ if (! function_exists('authy')) {
     {
         return app('authy');
     }
-
 }

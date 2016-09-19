@@ -7,9 +7,10 @@ use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenti
 interface PhoneToken
 {
     /**
-     * Start the user two-factor authentication via phone call
+     * Start the user two-factor authentication via phone call.
      *
-     * @param  \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
+     *
      * @return void
      */
     public function sendPhoneCallToken(TwoFactorAuthenticatable $user);
