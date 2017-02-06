@@ -2,12 +2,8 @@
 
 namespace Srmklive\Authy\Auth\TwoFactor;
 
-use Illuminate\Auth\Authenticatable as BaseAuthenticatable;
-
 trait Authenticatable
 {
-    use BaseAuthenticatable;
-
     /**
      * Get the e-mail address used for two-factor authentication.
      *
