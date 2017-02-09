@@ -94,7 +94,7 @@ use Authenticatable, Authorizable, CanResetPassword;
 to
 
 ```
-use Authorizable, CanResetPassword, TwoFactorAuthenticatable;
+use Authenticatable, Authorizable, CanResetPassword, TwoFactorAuthenticatable;
 ```
 
   * Lastly, add/update $hidden variable to hide 'two_factor_options' field from any DB call for user detail:
