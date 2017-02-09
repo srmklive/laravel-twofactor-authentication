@@ -50,7 +50,7 @@ Srmklive\Authy\Providers\AuthyServiceProvider::class // Laravel 5.1 or greater
 * Run the following command to publish configuration:
 
 ```
-php artisan vendor:publish
+php artisan vendor:publish --provider "Srmklive\Authy\Providers\AuthyServiceProvider"
 ```
 
 * Run the following command to migrate user table changes to database:
