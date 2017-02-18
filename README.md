@@ -25,37 +25,37 @@ This plugins allows you to enable two-factor authentication in your Laravel appl
 
 * Use following command to install:
 
-```
+```bash
 composer require srmklive/authy
 ```
 
 * Add the service provider to your $providers array in config/app.php file like: 
 
-```
+```php
 'Srmklive\Authy\Providers\AuthyServiceProvider' // Laravel 5
 ```
-```
+```php
 Srmklive\Authy\Providers\AuthyServiceProvider::class // Laravel 5.1 or greater
 ```
 
 * Add the alias to your $aliases array in config/app.php file like: 
 
-```
+```php
 'Authy' => 'Srmklive\Authy\Facades\Authy' // Laravel 5
 ```
-```
+```php
 'Authy' => Srmklive\Authy\Facades\Authy::class // Laravel 5.1 or greater
 ```
 
 * Run the following command to publish configuration:
 
-```
+```bash
 php artisan vendor:publish --provider "Srmklive\Authy\Providers\AuthyServiceProvider"
 ```
 
 * Run the following command to migrate user table changes to database:
 
-```
+```bash
 php artisan migrate
 ```
 
@@ -63,14 +63,14 @@ php artisan migrate
 
   * Before the class declaration, add these lines:
 
-```
+```php
 use Srmklive\Authy\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatableContract;
 ```
 
   * Now the change the class declaration. For example, if your class declaration is 
 
-```
+```php
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -78,7 +78,7 @@ class User extends Model implements AuthenticatableContract,
 
 then change it to this:
 
-```
+```php
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract,
@@ -87,19 +87,19 @@ class User extends Model implements AuthenticatableContract,
 
   * Now change the import traits line accordingly in user model file. For example if the line is:
 
-```
+```php
 use Authenticatable, Authorizable, CanResetPassword;
 ```
 
 to
 
-```
+```php
 use Authenticatable, Authorizable, CanResetPassword, TwoFactorAuthenticatable;
 ```
 
   * Lastly, add/update $hidden variable to hide 'two_factor_options' field from any DB call for user detail:
 
-```
+```php
 protected $hidden = [
 	'two_factor_options'
 ];
@@ -111,7 +111,7 @@ protected $hidden = [
 
 * You need to add the following code to your `app\Http\Controllers\Auth\AuthController.php`.
 
-```
+```php
     /**
      * Send the post-authentication response.
      *
@@ -199,14 +199,14 @@ protected $hidden = [
 
 * Add route to verify two-factor authentication token
 
-```
+```php
 Route::get('auth/token','Auth\AuthController@getToken');
 Route::post('auth/token','Auth\AuthController@postToken');
 ```
 
 * Create view file in `resources/views/auth/token.blade.php`. Change this accordingly for your application. I have used code from [AdminLTE](https://github.com/almasaeed2010/AdminLTE) theme here.
 
-```
+```blade
 @extends('layouts.app')
 
 @section('content')
@@ -251,7 +251,7 @@ Route::post('auth/token','Auth\AuthController@postToken');
 
 * Registering User
 
-```
+```php
 $phone = '405-342-5699';
 $code = 1;
 
@@ -274,7 +274,7 @@ try {
 
 * Send token via SMS
 
-```
+```php
 $user = User::find(1);
 
 try {
@@ -288,7 +288,7 @@ try {
 
 * Send token via phone call
 
-```
+```php
 $user = User::find(1);
 
 try {
@@ -302,7 +302,7 @@ try {
 
 * Validating two-factor token
 
-```
+```php
 $user = User::find(1);
 
 try {
@@ -316,7 +316,7 @@ try {
 
 * Deleting User
 
-```
+```php
 $user = User::find(1);
 
 try {
@@ -335,7 +335,7 @@ try {
 
 Currently this package uses two-factor authentication services from [**Authy**](https://www.authy.com). You can also implement another two-factor authentication provider by doing the following:
 
-```
+```php
 <?php
 
 namespace App\Services;
