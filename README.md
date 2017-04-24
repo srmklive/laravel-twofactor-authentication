@@ -4,6 +4,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/?branch=master)
 
 - [Introduction](#introduction)
 - [Installation](#installation)
