@@ -171,14 +171,12 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
      */
     public function canSendToken(TwoFactorAuthenticatable $user)
     {
-        if ($this->isEnabled($user)) {
-            if ($user->getTwoFactorAuthProviderOptions()['sms'] ||
-                $user->getTwoFactorAuthProviderOptions()['phone'] ||
-                $user->getTwoFactorAuthProviderOptions()['email']) {
-                return true;
-            }
-        }
+        $sendToken = collect(
+            $user->getTwoFactorAuthProviderOptions()
+        )->filter(function($option, $key) {
+            return ($option && in_array($key, ['sms', 'phone', 'email'])) ? $option : null;
+        });
 
-        return false;
+        return ($this->isEnabled($user) && (!$sendToken->isEmpty())) ? true : false;
     }
 }
