@@ -11,8 +11,6 @@ use Srmklive\Authy\Contracts\Auth\TwoFactor\SMSToken as SendSMSTokenContract;
 
 class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContract
 {
-    use CanSendToken;
-
     /**
      * Array containing configuration data.
      *
