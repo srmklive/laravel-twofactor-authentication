@@ -1,10 +1,11 @@
 # Laravel Two-Factor Authentication
 
-[![StyleCI](https://styleci.io/repos/47398032/shield?style=flat)](https://styleci.io/repos/47398032)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
 [![Total Downloads](https://img.shields.io/packagist/dt/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
+[![StyleCI](https://styleci.io/repos/47398032/shield?style=flat)](https://styleci.io/repos/47398032)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/1f1e2abe-aefe-4490-a011-0ec8fac6860f/small.png)](https://insight.sensiolabs.com/projects/1f1e2abe-aefe-4490-a011-0ec8fac6860f)
 
 - [Introduction](#introduction)
 - [Installation](#installation)
