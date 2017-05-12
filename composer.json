@@ -12,10 +12,7 @@
   "autoload":{
     "psr-4": {
       "Srmklive\\Authy\\": "src/"
-    },
-    "files": [
-      "src/functions.php"
-    ]
+    }
   },
   "authors": [
     {
