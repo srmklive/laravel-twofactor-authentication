@@ -9,6 +9,16 @@
     "nesbot/carbon": "~1.2",
     "illuminate/support": "~5.1|~5.2|~5.3|~5.4|~5.5"
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Srmklive\\Authy\\Providers\\AuthyServiceProvider"
+      ],
+      "aliases": {
+        "Authy": "Srmklive\\Authy\\Facades\\Authy"
+      }
+    }
+  },
   "autoload":{
     "psr-4": {
       "Srmklive\\Authy\\": "src/"
