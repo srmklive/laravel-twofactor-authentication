@@ -19,7 +19,7 @@
 
 This plugins allows you to enable two-factor authentication in your Laravel applications. 
 
-**Only Laravel 5 or greater supported**
+**Only Laravel 5.1 or greater supported**
 
 
 <a name="installation"></a>
@@ -34,19 +34,13 @@ composer require srmklive/authy
 * Add the service provider to your $providers array in config/app.php file like: 
 
 ```php
-'Srmklive\Authy\Providers\AuthyServiceProvider' // Laravel 5
-```
-```php
-Srmklive\Authy\Providers\AuthyServiceProvider::class // Laravel 5.1 or greater
+Srmklive\Authy\Providers\AuthyServiceProvider::class
 ```
 
 * Add the alias to your $aliases array in config/app.php file like: 
 
 ```php
-'Authy' => 'Srmklive\Authy\Facades\Authy' // Laravel 5
-```
-```php
-'Authy' => Srmklive\Authy\Facades\Authy::class // Laravel 5.1 or greater
+'Authy' => Srmklive\Authy\Facades\Authy::class
 ```
 
 * Run the following command to publish configuration:
@@ -142,7 +136,7 @@ protected $hidden = [
         // Uncomment this line for Laravel 5.2+
         //auth($this->getGuard())->logout();
 
-        // Uncomment this line for Laravel 5.0 & 5.1
+        // Uncomment this line for Laravel 5.1
         // auth()->logout();
 
         $request->session()->put('authy:auth:id', $user->id);
@@ -178,7 +172,7 @@ protected $hidden = [
         //$provider = config('auth.guards.' . $guard . '.provider');
         //$model = config('auth.providers.' . $provider . '.model');
 
-        // Uncomment the line below for use in Laravel 5.0 & 5.1
+        // Uncomment the line below for use in Laravel 5.1
         // $model = config('auth.model');
 
         $user = (new $model)->findOrFail(
@@ -189,8 +183,8 @@ protected $hidden = [
             // Uncomment this line for Laravel 5.2+
             //auth($this->getGuard())->login($user);
 
-            // Uncomment this line for Laravel 5.0 & 5.1
-	    //auth()->login($user);
+            // Uncomment this line for Laravel 5.1
+	        //auth()->login($user);
 
             return redirect()->intended($this->redirectPath());
         } else {
