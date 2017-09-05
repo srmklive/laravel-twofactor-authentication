@@ -3,7 +3,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
 [![Total Downloads](https://img.shields.io/packagist/dt/srmklive/authy.svg?style=flat-square)](https://packagist.org/packages/srmklive/authy)
-[![StyleCI](https://styleci.io/repos/47398032/shield?style=flat)](https://styleci.io/repos/47398032)
+[![StyleCI](https://styleci.io/repos/473authy()98032/shield?style=flat)](https://styleci.io/repos/47398032)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/srmklive/laravel-twofactor-authentication/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1f1e2abe-aefe-4490-a011-0ec8fac6860f/small.png)](https://insight.sensiolabs.com/projects/1f1e2abe-aefe-4490-a011-0ec8fac6860f)
 
@@ -108,6 +108,7 @@ protected $hidden = [
 * You need to add the following code to your `app\Http\Controllers\Auth\AuthController.php`.
 
 ```php
+
     /**
      * Send the post-authentication response.
      *
@@ -117,7 +118,7 @@ protected $hidden = [
      */
     protected function authenticated(Request $request, Authenticatable $user)
     {
-        if (authy()->isEnabled($user)) {
+        if (Authy::getProvider()->isEnabled($user)) {
             return $this->logoutAndRedirectToTokenScreen($request, $user);
         }
 
@@ -179,7 +180,7 @@ protected $hidden = [
             $request->session()->pull('authy:auth:id')
         );
 
-        if (authy()->tokenIsValid($user, $request->token)) {
+        if (Authy::getProvider()->tokenIsValid($user, $request->token)) {
             // Uncomment this line for Laravel 5.2+
             //auth($this->getGuard())->login($user);
 
