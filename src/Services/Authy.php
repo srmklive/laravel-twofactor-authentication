@@ -4,6 +4,7 @@ namespace Srmklive\Authy\Services;
 
 use Exception;
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\ClientException;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\PhoneToken as SendPhoneTokenContract;
 use Srmklive\Authy\Contracts\Auth\TwoFactor\Provider as BaseProvider;
@@ -50,24 +51,36 @@ class Authy implements BaseProvider, SendSMSTokenContract, SendPhoneTokenContrac
      * @param \Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable $user
      * @param bool                                                     $sms
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function register(TwoFactorAuthenticatable $user, $sms = false)
     {
-        $response = json_decode((new HttpClient())->post($this->config['api_url'].'/protected/json/users/new?api_key='.$this->config['api_key'], [
-            'form_params' => [
-                'user' => [
-                    'email'        => $user->getEmailForTwoFactorAuth(),
-                    'cellphone'    => preg_replace('/[^0-9]/', '', $user->getAuthPhoneNumber()),
-                    'country_code' => $user->getAuthCountryCode(),
+        try {
+            $request = (new HttpClient())->post($this->config['api_url'].'/protected/json/users/new?api_key='.$this->config['api_key'], [
+                'form_params' => [
+                    'user' => [
+                        'email'        => $user->getEmailForTwoFactorAuth(),
+                        'cellphone'    => preg_replace('/[^0-9]/', '', $user->getAuthPhoneNumber()),
+                        'country_code' => $user->getAuthCountryCode(),
+                    ],
                 ],
-            ],
-        ])->getBody(), true);
+            ]);
 
-        $user->setTwoFactorAuthProviderOptions([
-            'id'  => $response['user']['id'],
-            'sms' => $sms,
-        ]);
+            $response = $request->getBody()->getContents();
+            $response = \GuzzleHttp\json_decode($response, true);
+
+            $user->setTwoFactorAuthProviderOptions([
+                'id'  => $response['user']['id'],
+                'sms' => $sms,
+            ]);
+        } catch (ClientException $e) {
+            $errors = $e->getResponse()->getBody()->getContents();
+            $errors = \GuzzleHttp\json_decode($errors, true);
+
+            throw new \Exception($errors['message']);
+        }
     }
 
     /**
